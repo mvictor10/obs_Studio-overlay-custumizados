@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Banner Estilo TV</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: "Poppins", Arial, sans-serif;
+      color: #000;
+      overflow: hidden;
+    }
+
+    .tv-banner {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      position: fixed;
+      bottom: 40px;
+      left: 40px;
+      height: 90px;
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: all 0.5s ease;
+      animation: slideUp 0.8s ease-out;
+      transform: translateX(0);
+    }
+
+    .tv-banner.oculto {
+      transform: translateX(-150%);
+      opacity: 0;
+    }
+
+    .box-hora {
+      width: 170px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 8px;
+      text-align: center;
+      transition: background 0.4s ease, opacity 0.4s ease;
+    }
+
+    .box-hora.relogio {
+      background: rgba(206, 155, 103, 0.63);
+    }
+
+    .box-hora.clima {
+      background: rgba(0, 51, 102, 0.75);
+    }
+
+    .hora, .clima-info {
+      font-size: 1.1em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      line-height: 1.1;
+      transition: opacity 0.4s ease;
+    }
+
+    .clima-icone {
+      font-size: 1.1em;
+      vertical-align: middle;
+    }
+
+    .clima-extra {
+      font-size: 0.75em;
+      color: #dfe9ff;
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    .legenda {
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-size: 0.8em;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(215, 0, 0, 0.91);
+      font-weight:bolder;
+    }
+
+    .box-info {
+      background: rgba(84, 81, 78, 0.63);
+      padding: 10px 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 340px;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .programa {
+      font-size: 1.2em;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .descricao {
+      font-size: 0.9em;
+      color: rgba(29, 26, 26, 0.65);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(120%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <div class="tv-banner" id="tvBanner">
+    <div class="box-hora relogio" id="boxEsquerda">
+      <div class="hora" id="hora">--:--</div>
+      <div class="legenda" id="legenda">AO VIVO</div>
+    </div>
+
+    <div class="box-info">
+      <div class="programa" id="programa">A Voz da Caatinga</div>
+      <div class="descricao" id="descricao">Apresentação: Índia Caatingueira</div>
+    </div>
+  </div>
+
+  <script>
+    const box = document.getElementById("boxEsquerda");
+    const horaEl = document.getElementById("hora");
+    const legendaEl = document.getElementById("legenda");
+    const programaEl = document.getElementById("programa");
+    const descricaoEl = document.getElementById("descricao");
+    const banner = document.getElementById("tvBanner");
+
+    let modoClima = false; // estado local
+    let mostrarBanner = true;
+
+    // Atualiza hora em tempo real
+    function atualizarHora() {
+      const agora = new Date();
+      const formato = agora.toLocaleTimeString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      horaEl.textContent = formato;
+    }
+
+    // Ícones de clima
+    function obterIcone(cond) {
+      if (!cond) return "🌡️";
+      const c = cond.toLowerCase();
+      if (c.includes("sol") || c.includes("ensolarado")) return "☀️";
+      if (c.includes("nublado") || c.includes("nuvem")) return "☁️";
+      if (c.includes("chuva") || c.includes("chuvoso")) return "🌧️";
+      if (c.includes("tempestade") || c.includes("trovão")) return "⛈️";
+      if (c.includes("neve")) return "❄️";
+      if (c.includes("vento")) return "🌬️";
+      if (c.includes("neblina") || c.includes("nevoa")) return "🌫️";
+      return "🌡️";
+    }
+
+    // Atualiza conteúdo do banner conforme localStorage
+    function atualizarBanner() {
+      const dados = JSON.parse(localStorage.getItem("bannerTV")) || {};
+      legendaEl.textContent = dados.legenda || "AO VIVO";
+      programaEl.textContent = dados.programa || "A Voz da Caatinga";
+      descricaoEl.textContent = dados.descricao || "Apresentação: Índia Caatingueira";
+
+      // Atualizar visibilidade do banner
+      if (dados.mostrarBanner === false) {
+        banner.classList.add("oculto");
+      } else {
+        banner.classList.remove("oculto");
+      }
+
+      // Verificar se o modo mudou
+      if (dados.modoClima !== modoClima) {
+        modoClima = dados.modoClima;
+
+        if (modoClima) {
+          const temp = dados.temp || "--";
+          const umid = dados.umid || "--";
+          const cond = dados.condicao || "";
+          const icone = obterIcone(cond);
+          box.classList.remove("relogio");
+          box.classList.add("clima");
+          horaEl.innerHTML = `
+            <div class="clima-info">
+              <span class="clima-icone">${icone}</span>${temp}°C
+            </div>
+            <div class="clima-extra">${cond} | 💧${umid}%</div>
+          `;
+        } else {
+          box.classList.remove("clima");
+          box.classList.add("relogio");
+          atualizarHora();
+        }
+      } else if (!modoClima) {
+        atualizarHora();
+      }
+    }
+
+    // Atualiza hora e sincroniza banner
+    setInterval(() => {
+      if (!modoClima) atualizarHora();
+      atualizarBanner();
+    }, 1000);
+
+    atualizarBanner();
+  </script>
+</body>
+</html>
