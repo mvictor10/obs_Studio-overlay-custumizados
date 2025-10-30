@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard do Projeto Placar OBS</title>
+    <title>Dashboard - Overlay para OBS STUDIO</title>
     
     <style>
         :root {
@@ -12,6 +12,7 @@
             --cor-texto: #ffffff;
             --cor-primaria: #387034; /* Seu verde primário */
             --cor-secundaria: #f39c12; /* Seu laranja de alerta */
+            --cor-legenda: #5D3FD3; /* Novo: Cor para Legenda */
             --sombra-leve: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
@@ -34,9 +35,9 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px; /* Aumentado para acomodar 5 cards em telas maiores */
             display: flex;
-            flex-wrap: wrap; /* Permite que os cards quebrem a linha */
+            flex-wrap: wrap; 
             gap: 20px;
             justify-content: center;
         }
@@ -46,7 +47,7 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: var(--sombra-leve);
-            flex: 1 1 300px; /* Flex Grow=1, Flex Shrink=1, Base Size=300px */
+            flex: 1 1 200px; /* Ajustado para acomodar 5 cards por linha em telas maiores */
             min-height: 150px;
             display: flex;
             flex-direction: column;
@@ -97,8 +98,22 @@
         .btn-view:hover {
             background-color: #f7b752;
         }
+        
+        .btn-legenda {
+            background-color: var(--cor-legenda); /* Cor distintiva para a legenda */
+            color: var(--cor-texto);
+        }
+        
+        .btn-legenda:hover {
+            background-color: #8c73e8;
+        }
 
-        /* Responsividade para telas muito pequenas */
+        /* Responsividade para telas menores */
+        @media (max-width: 768px) {
+            .card {
+                flex-basis: calc(50% - 10px); /* 2 cards por linha */
+            }
+        }
         @media (max-width: 480px) {
             .card {
                 flex-basis: 100%; /* Ocupa a largura total em telas pequenas */
@@ -118,31 +133,44 @@
     <div class="container">
         
         <div class="card">
-            <h2>⚙️ Painel de Controle</h2>
-            <p>Acesse o painel principal para alterar scores, nomes, períodos e controlar o cronômetro do jogo.</p>
-            <p><strong>Uso:</strong> Cole o caminho deste arquivo na Doca Personalizada (URL) do OBS.</p>
-            <a href="placa-de-jogos/dashboard.html" class="btn btn-control" target="_blank">Abrir Painel de Controle</a>
+            <h2>⚙️ Controle do Placar</h2>
+            <p>Altere scores, nomes, períodos e controle o cronômetro principal do jogo.</p>
+            <p><strong>Uso OBS:</strong> Doca Personalizada.</p>
+            <a href="/placar-de-jogos/dashboard.html" class="btn btn-control" target="_blank">Abrir Painel de Controle</a>
         </div>
         
         <div class="card">
-            <h2>📺 Placar de Exibição (Overlay)</h2>
-            <p>Esta é a fonte que deve ser adicionada como **Fonte de Navegador** na sua cena do OBS.</p>
-            <p><strong>Uso:</strong> Cole o caminho deste arquivo na Fonte de Navegador (URL) do OBS.</p>
-            <a href="placa-de-jogos/index.html" class="btn btn-view" target="_blank">Abrir Placar (Overlay)</a>
+            <h2>📺 Placar Principal (Overlay)</h2>
+            <p>A fonte que deve ser adicionada como **Fonte de Navegador** na sua cena do OBS.</p>
+            <p><strong>Uso OBS:</strong> Fonte de Navegador.</p>
+            <a href="/placar-de-jogos/index.html" class="btn btn-view" target="_blank">Abrir Placar (Overlay)</a>
+        </div>
+        
+        <div class="card">
+            <h2>📝 Controle da Legenda</h2>
+            <p>Painel para digitar e alternar a visibilidade de textos e informações extras (Ex: Gols, Artilheiro).</p>
+            <p><strong>Uso OBS:</strong> Doca Personalizada.</p>
+            <a href="legenda-noticias/painel.html" class="btn btn-legenda" target="_blank">Abrir Painel da Legenda</a>
+        </div>
+        
+        <div class="card">
+            <h2>🏷️ Legenda de Exibição</h2>
+            <p>A fonte da legenda que será posicionada na parte inferior da tela.</p>
+            <p><strong>Uso OBS:</strong> Fonte de Navegador.</p>
+            <a href="legenda-noticias/index.html" class="btn btn-legenda" target="_blank">Abrir Legenda (Overlay)</a>
         </div>
         
         <div class="card">
             <h2>📁 Arquivos e Configurações</h2>
-            <p>Acesse as pastas e arquivos de configuração do projeto, incluindo CSS e imagens (logos).</p>
-            <p><strong>Ação:</strong> Acesse a pasta do projeto no seu computador.</p>
-            
-            <a href="#" class="btn" style="background-color:#555;">Visualizar Estrutura de Pastas</a>
+            <p>Acesso rápido à pasta raiz do projeto para manutenção de CSS e Logos.</p>
+            <p><strong>Ação:</strong> Acesse a pasta do projeto.</p>
+            <a href="#" class="btn" style="background-color:#555;">Visualizar Estrutura</a>
         </div>
         
     </div>
     
     <div style="margin-top: 30px; font-size: 0.8em; color: #777;">
-        Projeto desenvolvido para automação e controle via OBS Studio.
+        Projeto de Placar e Legendas modular, desenvolvido para OBS Studio.
     </div>
 
 </body>
