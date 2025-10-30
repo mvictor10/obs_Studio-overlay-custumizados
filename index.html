@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Projeto Placar OBS</title>
+    
+    <style>
+        :root {
+            --cor-fundo: #121212;
+            --cor-card: #1e1e1e;
+            --cor-texto: #ffffff;
+            --cor-primaria: #387034; /* Seu verde primário */
+            --cor-secundaria: #f39c12; /* Seu laranja de alerta */
+            --sombra-leve: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--cor-primaria);
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap; /* Permite que os cards quebrem a linha */
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--cor-card);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra-leve);
+            flex: 1 1 300px; /* Flex Grow=1, Flex Shrink=1, Base Size=300px */
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--cor-secundaria);
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        .btn {
+            display: block;
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .btn-control {
+            background-color: var(--cor-primaria);
+            color: var(--cor-texto);
+        }
+
+        .btn-control:hover {
+            background-color: #5a9c56;
+        }
+
+        .btn-view {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-fundo);
+        }
+
+        .btn-view:hover {
+            background-color: #f7b752;
+        }
+
+        /* Responsividade para telas muito pequenas */
+        @media (max-width: 480px) {
+            .card {
+                flex-basis: 100%; /* Ocupa a largura total em telas pequenas */
+                min-height: auto;
+            }
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Gerenciador do Placar OBS Studio</h1>
+    <p>Ponto de acesso central para o Painel de Controle e o Overlay de Exibição.</p>
+
+    <div class="container">
+        
+        <div class="card">
+            <h2>⚙️ Painel de Controle</h2>
+            <p>Acesse o painel principal para alterar scores, nomes, períodos e controlar o cronômetro do jogo.</p>
+            <p><strong>Uso:</strong> Cole o caminho deste arquivo na Doca Personalizada (URL) do OBS.</p>
+            <a href="placar_controle.html" class="btn btn-control" target="_blank">Abrir Painel de Controle</a>
+        </div>
+        
+        <div class="card">
+            <h2>📺 Placar de Exibição (Overlay)</h2>
+            <p>Esta é a fonte que deve ser adicionada como **Fonte de Navegador** na sua cena do OBS.</p>
+            <p><strong>Uso:</strong> Cole o caminho deste arquivo na Fonte de Navegador (URL) do OBS.</p>
+            <a href="placar_overlay.html" class="btn btn-view" target="_blank">Abrir Placar (Overlay)</a>
+        </div>
+        
+        <div class="card">
+            <h2>📁 Arquivos e Configurações</h2>
+            <p>Acesse as pastas e arquivos de configuração do projeto, incluindo CSS e imagens (logos).</p>
+            <p><strong>Ação:</strong> Acesse a pasta do projeto no seu computador.</p>
+            
+            <a href="#" class="btn" style="background-color:#555;">Visualizar Estrutura de Pastas</a>
+        </div>
+        
+    </div>
+    
+    <div style="margin-top: 30px; font-size: 0.8em; color: #777;">
+        Projeto desenvolvido para automação e controle via OBS Studio.
+    </div>
+
+</body>
+</html>
